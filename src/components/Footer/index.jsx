@@ -22,8 +22,8 @@ const Footer = () => {
           augue non congue netus est consectetur turpis.
         </p>
       </div>
-      <div className="w-[60%] m-auto pt-5 pb-3 flex justify-center flex-wrap gap-6">
-        <Link to="/legal" className="text-[#ffffff9c] text-sm  font-normal leading-10 hover:text-white">
+      <div className="w-[60%] m-auto pt-5 pb-3 flex justify-center flex-wrap md:gap-6">
+        <Link to="/legal" className="text-[#ffffff9c] text-sm  font-normal leading-10 hover:text-white mr-10 md:mr-0">
           Legal
         </Link>
         <Link to="/privacy-policy" className="text-[#ffffff9c] text-sm  font-normal leading-10  hover:text-white">
@@ -37,7 +37,7 @@ const Footer = () => {
         </Link>
       </div>
       <div className="w-[60%] m-auto py-0 flex justify-center flex-wrap">
-        <p className="text-[#ffffff9c] text-base  font-normal leading-0">
+        <p className="text-[#ffffff9c] text-base  font-normal leading-0 pb-5 md:pb-0">
           All rights reserved &copy; 2024 - 2030{" "}
         </p>
       </div>

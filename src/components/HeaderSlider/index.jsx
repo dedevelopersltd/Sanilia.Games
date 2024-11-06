@@ -20,30 +20,30 @@ const HeaderSlider = () => {
 
   return (
     <>
-      <div className="xl:h-screen h-[50vh] w-full">
+      <div className="xl:h-screen h-[80vh] md:h-[50vh] w-full">
         <Slider {...settings}>
-          <div className="xl:h-screen h-[50vh] w-full">
+          <div className="xl:h-screen h-[80vh] md:h-[50vh] w-full">
             <img src={SliderPic1} className="h-full  w-full object-cover" alt="" />
           </div>
-          <div className="xl:h-screen h-[50vh] w-full">
+          <div className="xl:h-screen h-[80vh] md:h-[50vh] w-full">
             <img src={SliderPic1} className="h-full w-full object-cover" alt="" />
           </div>
-          <div className="xl:h-screen h-[50vh] w-full">
+          <div className="xl:h-screen h-[80vh] md:h-[50vh] w-full">
             <img src={SliderPic1} className="h-full w-full object-cover" alt="" />
           </div>
-          <div className="xl:h-screen h-[50vh] w-full">
+          <div className="xl:h-screen h-[80vh] md:h-[50vh] w-full">
             <img src={SliderPic1} className="h-full w-full object-cover" alt="" />
           </div>
         </Slider>
       </div>
 
       <div className="h-full w-full absolute bg-[#18181856] top-0 left-0"></div>
-      <div className="w-[90%] absolute left-[5%] h-[70%] top-0 flex items-center ">
+      <div className="w-[90%] absolute left-[5%] h-full md:h-[70%] top-0 flex items-center ">
         <div className="xl:w-1/2 w-full flex flex-col xl:mt-32">
           <h3 className="text-white text-[24px]  font-medium uppercase">
             Get Ready to
           </h3>
-          <h1 className="text-white text-[60px] font-semibold sm:leading-[95px] leading-10 uppercase">
+          <h1 className="text-white text-[30px] mb-5 md:mb-0 md:text-[60px] font-semibold sm:leading-[95px] leading-10 uppercase">
             Play & <span className="MainHeaderHeading">Conquer</span>
           </h1>
           <p className="text-white text-[16px] font-normal leading-normal tracking-[0.72px] uppercase">

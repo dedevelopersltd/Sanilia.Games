@@ -23,10 +23,10 @@ const StaticPages = () => {
   };
   return (
     <MainLayout>
-      <div className="relative">
+      {/* <div className="relative">
         <HeaderSlider />
-      </div>
-      <div className="w-[90%] m-auto mt-10 z-10 relative">
+      </div> */}
+      <div className="w-[90%] m-auto mt-32 z-10 relative">
         <div className="w-full">
          <h1 className="text-white text-3xl uppercase font-bold">{formatSlug(slug)}</h1>
          <div className="text-white text-sm font-normal leading-5 pages_html">

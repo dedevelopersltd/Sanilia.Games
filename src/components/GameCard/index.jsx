@@ -1,10 +1,12 @@
 import React from "react";
 import { gamecardpic, StarIcon } from "../../assets";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const GameCard = () => {
+  const navigate = useNavigate();
   return (
-    <div className="border CorenerRound GameCardBack overflow-hidden">
-      <div className="h-80">
+    <div className="border CorenerRound GameCardBack overflow-hidden cursor-pointer" onClick={()=> navigate("/game/pubg-pc")}> 
+      <div className="h-64">
         <img
           className="h-full w-full object-cover"
           src={gamecardpic}
@@ -18,7 +20,7 @@ const GameCard = () => {
               (D&D) 5th Edition
             </h1>
             <p className="text-white text-[14px] font-light leading-normal capitalize mt-2">
-              All time best gaming experince......
+              All time best ...
             </p>
           </div>
           <div className="flex items-center mt-3">

@@ -9,6 +9,7 @@ import Card from "../../components/Carousel/Card";
 import Carroussel from "../../components/Carousel/MainCarousel";
 import BarBottom from "./../../assets/images/barblack.svg";
 import MaskBototmleft from "./../../assets/images/mask_bottom_left.svg";
+import CarasoulSlider from "./Carasoul"
 
 const SliderArr = [
   {
@@ -48,38 +49,38 @@ const Home = () => {
       {/* // Main header Slider */}
       <div className="relative">
         <HeaderSlider />
-       
-       
-        
+
+
+
       </div>
 
-      
+
 
       <div className="sm:w-[95%] w-[90%] 2xl:-mt-64 xl:-mt-[200px] relative mt-10 left-[5%] grid xl:grid-cols-2 grid-cols-1 gap-10 overflow-hidden">
-          <div className="flex justify-start flex-col">
-            <h3 className="text-white text-[20px] font-medium uppercase mt-[7rem]">
-              CHOOSE YOUR
-            </h3>
-            <h1 className="text-white text-[50px] font-semibold sm:leading-[95px] leading-10 uppercase">
-              Favorite <span className="MainHeaderHeading">Games</span>
-            </h1>
-            <p className="text-white text-xs font-normal leading-6 tracking-[0.72px] uppercase">
-              hen focusing on the main objectives, Assassin's Creed Valhalla is
-              about 59½ Hours in length. If you're a gamer that strives to see
-              all{" "}
-            </p>
-          </div>
-          <div>
-            <div className=" sm:w-[120%] w-full">
-              <BottomHeaderSlider />
-            </div>
+        <div className="flex justify-start flex-col">
+          <h3 className="text-white text-[20px] font-medium uppercase mt-[1rem] md:mt-[7rem]">
+            CHOOSE YOUR
+          </h3>
+          <h1 className="text-white mb-3 md:mb-0 text-[40px] md:text-[50px] font-semibold sm:leading-[95px] leading-10 uppercase">
+            Favorite <span className="MainHeaderHeading">Games</span>
+          </h1>
+          <p className="text-white text-xs font-normal leading-6 tracking-[0.72px] uppercase">
+            hen focusing on the main objectives, Assassin's Creed Valhalla is
+            about 59½ Hours in length. If you're a gamer that strives to see
+            all{" "}
+          </p>
+        </div>
+        <div>
+          <div className=" sm:w-[120%] w-full">
+            <BottomHeaderSlider />
           </div>
         </div>
-{/* 
+      </div>
+      {/* 
         <div className="bar_bottom_header_cirles">
         <img src={MaskBototmleft} alt="" />
       </div> */}
-        
+
 
       {/* // Main header Slider */}
 
@@ -109,12 +110,14 @@ const Home = () => {
               <FaChevronDown className="text-white" />
             </div>
             <div className="bg-[#15D274] h-[50px] w-[50px] CorenerRound flex items-center justify-center">
-              <img src={SortIcon} alt="SortIcon.svg"  style={{ height: "25px" }} />
+              <img src={SortIcon} alt="SortIcon.svg" style={{ height: "25px" }} />
             </div>
           </div>
         </div>
 
-        <div className="mt-10 w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-[20px]">
+        <div className="mt-10 w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-[20px]">
+          <GameCard />
+          <GameCard />
           <GameCard />
           <GameCard />
           <GameCard />
@@ -126,6 +129,37 @@ const Home = () => {
           <button className="FeatureBtn text-white CorenerRound text-[18px] font-normal leading-normal tracking-[0.26px] capitalize">
             See More
           </button>
+        </div>
+      </div>
+
+      <div className="featur_bg_wrap relative mt-36 mb-24">
+        <div className="w-[90%] m-auto mt-10 ">
+          <div className="w-full flex md:flex-row flex-col justify-between items-center gap-10">
+            <div className="flex flex-col justify-center gap-8 w-full md:w-1/3">
+              <h1 className="text-white text-[35px] font-semibold leading-[25px] uppercase">
+                Feature
+              </h1>
+              <p className="text-white text-sm font-light tracking-[0.8px] uppercase">
+                with more than 3 billion active gamers gollably set to
+                transition into the new exiciing world of gaming, gaming
+                techonogy{" "}
+              </p>
+              <button className="FeatureBtn !h-[55px] !w-[200px] text-white CorenerRound text-[18px] font-normal leading-normal tracking-[0.26px] capitalize">
+                See More
+              </button>
+            </div>
+            <div className="border-1 border-white w-full md:w-2/3">
+              <CarasoulSlider cards={SliderArr} />
+              {/* <Carroussel
+                cards={SliderArr}
+                height="600px"
+                width="80%"
+                margin="0 auto"
+                offset={5}
+                showArrows={false}
+              /> */}
+            </div>
+          </div>
         </div>
       </div>
 

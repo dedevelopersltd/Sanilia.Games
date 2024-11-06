@@ -40,6 +40,7 @@ const Navbar = () => {
 
   const handle_close = async() => {
     setForgot(false); 
+    setIsOpen(false);
     setLogin(false);
     setOTP(false);
     setChangePass(false);
@@ -113,11 +114,11 @@ const Navbar = () => {
                 About Us
               </li>
             </Link>
-            <Link to={"/"}>
+            {/* <Link to={"/"}>
               <li className="text-white text-[14px] text-sm font-normal leading-normal tracking-[0.8px] uppercase  hover:text-white hover:font-medium ">
                 Contact
               </li>
-            </Link>
+            </Link> */}
           </ul>
 
           {/* Desktop Search and Login */}
@@ -127,7 +128,7 @@ const Navbar = () => {
               className="cursor-pointer h-6 w-6"
               alt="SearchIcon.svg"
             />
-            <button className="LoginBtn h-[51px] px-16 rounded-tr-xl rounded-bl-xl font-normal text-sm text-white"  onClick={() => setLogin(true)}>
+            <button className="LoginBtn h-[51px] px-16 rounded-tr-xl rounded-bl-xl font-normal text-sm text-white"  onClick={() => {setIsOpen(false);setLogin(true)}}>
               Log in
             </button>
           </div>
@@ -164,7 +165,7 @@ const Navbar = () => {
                 Home
               </li>
             </Link>
-            <Link to={"/"} onClick={toggleMenu}>
+            <Link to={"/games/advertisement"} onClick={toggleMenu}>
               <li className="text-black text-[20px] font-semibold uppercase">
                 Apps & Games
               </li>
@@ -174,16 +175,16 @@ const Navbar = () => {
                 Features
               </li>
             </Link> */}
-            <Link to={"/"} onClick={toggleMenu}>
+            <Link to={"/about-us"} onClick={toggleMenu}>
               <li className="text-black text-[20px] font-semibold uppercase">
                 About Us
               </li>
             </Link>
-            <Link to={"/"} onClick={toggleMenu}>
+            {/* <Link to={"/"} onClick={toggleMenu}>
               <li className="text-black text-[20px] font-semibold uppercase">
                 Contact
               </li>
-            </Link>
+            </Link> */}
           </ul>
 
           {/* Search and Login for Mobile */}
@@ -193,7 +194,7 @@ const Navbar = () => {
               className="cursor-pointer"
               alt="SearchIcon.svg"
             />
-            <button className="LoginBtn h-[50px] w-[150px] rounded-tr-xl rounded-bl-xl" onClick={() => setLogin(true)}>
+            <button className="LoginBtn h-[50px] w-[150px] rounded-tr-xl rounded-bl-xl" onClick={() => {setIsOpen(false);setLogin(true)}}>
               Login
             </button>
           </div>
@@ -204,7 +205,7 @@ const Navbar = () => {
       login &&
       <div className="fixed top-0 left-0 right-0 bottom-0 z-[999] bg-[#18181810] backdrop-blur-[20px] h-screen w-full popup_outer ">
         <div class="flex justify-center items-center h-full w-full">
-          <div class="center_popup_div p-10 px-14 CorenerRound sm:w-[90%] md:w-[43%] bounce-enter">
+          <div class="center_popup_div p-10 px-8 md:px-14 CorenerRound w-[90%] md:w-[43%] bounce-enter">
             <div className="flex justify-end cursor-pointer absolute right-3 top-3" onClick={() => handle_close()}>
             <IoIosCloseCircle color="white" size={30} />
             </div>
@@ -251,7 +252,7 @@ const Navbar = () => {
       signup &&
       <div className="fixed top-0 left-0 right-0 bottom-0 z-[999] bg-[#18181810] backdrop-blur-[20px] h-screen w-full popup_outer  ">
         <div class="flex justify-center items-center h-full w-full">
-          <div class="center_popup_div p-10 px-14 CorenerRound sm:w-[90%] md:w-[43%] bounce-enter">
+          <div class="center_popup_div p-10 px-8 md:px-14 CorenerRound w-[90%] md:w-[43%] bounce-enter">
             <div className="flex justify-end cursor-pointer absolute right-3 top-3" onClick={() => handle_close()}>
             <IoIosCloseCircle color="white" size={30} />
             </div>
@@ -340,7 +341,7 @@ const Navbar = () => {
           forgot &&
           <div className="fixed top-0 left-0 right-0 bottom-0 z-[999] bg-[#18181810] backdrop-blur-[20px] h-screen w-full popup_outer ">
             <div class="flex justify-center items-center h-full w-full">
-              <div class="center_popup_div p-10 px-20 CorenerRound sm:w-[90%] md:w-[43%] bounce-enter">
+              <div class="center_popup_div p-10 px-8 md:px-20 CorenerRound w-[90%] md:w-[43%] bounce-enter">
                 <div className="flex justify-end cursor-pointer absolute right-3 top-3" onClick={() => handle_close()}>
                 <IoIosCloseCircle color="white" size={30} />
                 </div>

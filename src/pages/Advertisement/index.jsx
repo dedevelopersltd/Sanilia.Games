@@ -14,18 +14,18 @@ const Advertisement = () => {
   return (
     <MainLayout>
       {/* // Main header Slider */}
-      <div className="relative">
+      {/* <div className="relative">
         <HeaderSlider />
-      </div>
+      </div> */}
       <div className="bar_bottom_header_cirles">
         <img src={MaskBototmleft} alt="" />
       </div>
 
       {/* // Main header Slider */}
 
-      <div className="w-[90%] m-auto mt-10 z-10 relative">
+      <div className="w-[90%] m-auto mt-32 z-10 relative">
         <div className="w-full flex justify-end  items-center flex-wrap gap-4">
-          <div className="GamesSearch h-[54px] w-max flex items-center px-4 py-2 space-x-4 ">
+          <div className="GamesSearch h-[54px] w-full md:w-max flex items-center px-4 py-2 space-x-4 ">
             <img
               className="cursor-pointer"
               src={SearchIcon}
@@ -38,19 +38,19 @@ const Advertisement = () => {
               placeholder="Game Name"
             />
           </div>
-          <div className="flex items-center gap-4">
-            <p className="text-white text-sm font-normal leading-normal">
+          <div className="flex items-center gap-4 flex-col md:flex-row  w-full md:w-auto">
+            <p className="text-white text-sm font-normal leading-normal ">
               Sort by
             </p>
 
-            <div className="flex gap-4 items-center filter_select">
-              <select className="w-[160px] bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none">
+            <div className="flex gap-4 items-center filter_select flex-wrap  w-full md:w-auto">
+              <select className=" bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none w-full md:w-[160px]">
                 <option value=''>Age Rating</option>
               </select>
-              <select className="w-[160px] bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none">
+              <select className="w-full md:w-[160px] bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none">
                 <option value=''>Genere</option>
               </select>
-              <select className="w-60 bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none">
+              <select className="w-full md:w-60 bg-transparent outline-none text-white text-sm font-light leading-normal GamesSearch h-[54px] flex items-center px-3 py-2 space-x-4 appearance-none">
                 <option value=''>Newly Launched</option>
               </select>
             </div>
@@ -62,7 +62,7 @@ const Advertisement = () => {
           </div>
         </div>
 
-        <div className="mt-10 w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-[20px]">
+        <div className="mt-10 w-full grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-[20px]">
           {
             [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(element => (
               <GameCard />  

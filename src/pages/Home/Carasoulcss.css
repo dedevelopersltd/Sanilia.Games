@@ -1,0 +1,49 @@
+/* 
+  .card {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+  .main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .wrapper {
+    display: flex;
+    margin: 20px;
+  }
+   */
+
+
+   .main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%; /* Set width to fit your layout */
+    height: 500px; /* Adjust height as necessary */
+  }
+  
+  .card {
+    position: absolute;
+    cursor:grabbing;
+    width: 370px; /* Adjust width for overlap effect */
+    /* transition: transform 0.5s ease-in-out; */
+  }
+  
+  .buttonscarasoul {
+    margin-top: 20px;
+  }
