@@ -54,6 +54,9 @@ const DashboardLayout = ({ children }) => {
   const [lastName, setLastName] = useState(user?.lastName);
   const [selectedGames, setSelectedGames] = useState(user?.gamesIntrest);
 
+  const normalizedCoverImage = coverImage?.replace(/\\/g, '/');
+
+
 
   // Handle file selection and preview
   const handleFileChange = async (e , type) => {
@@ -393,7 +396,7 @@ const DashboardLayout = ({ children }) => {
           <div className="w-full relative">
             <div
               style={{
-                backgroundImage: shouldHide ? "none" : `url(${coverImage || UserBg })`,
+                backgroundImage: shouldHide ? "none" : `url(${normalizedCoverImage || UserBg })`,
               }}
               className={`bg-cover bg-center w-full ${
                 shouldHide ? "h-0" : "h-[600px] md:h-[450px]"
