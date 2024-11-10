@@ -3,12 +3,12 @@ import { MainLayout } from "../../Layouts";
 import { BottomHeaderSlider, GameCard, HeaderSlider } from "../../components";
 import { FavCardimg, SearchIcon, SortIcon } from "../../assets";
 import { FaChevronDown } from "react-icons/fa";
-import Slider from "../../components/Slider";
+// import Slider from "../../components/Slider";
 import MasterCard from "../../components/MasterCard";
 import Card from "../../components/Carousel/Card";
-import Carroussel from "../../components/Carousel/MainCarousel";
-import BarBottom from "./../../assets/images/barblack.svg";
-import MaskBototmleft from "./../../assets/images/mask_bottom_left.svg";
+// import Carroussel from "../../components/Carousel/MainCarousel";
+// import BarBottom from "./../../assets/images/barblack.svg";
+// import MaskBototmleft from "./../../assets/images/mask_bottom_left.svg";
 import CarasoulSlider from "./Carasoul"
 
 const SliderArr = [
