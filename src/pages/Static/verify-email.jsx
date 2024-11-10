@@ -18,12 +18,10 @@ const VerifyEmail = () => {
           if (response.status === 200 || response.status === 201 ) {
             toast.success('Email Verified Successfully')
             navigate('/');
-          } else {
-            toast.error("Email verification failed. Please try again.");
-          }
+          } 
         } catch (error) {
           console.error("Verification error:", error);
-          toast.error("An error occurred during verification.");
+          toast.error(error.response.data.message || "An error occurred during verification.");
         }
       };
   
