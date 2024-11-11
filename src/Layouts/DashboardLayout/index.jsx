@@ -29,6 +29,50 @@ import useUnauthenticated from "../../hooks/useUnauthentication";
 import AddIntrest from "../../components/popups/intrests";
 import ChangePassword from "../../components/popups/change-password";
 import AddSocialLinks from "../../components/popups/add-social-links";
+import { 
+  FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaSnapchat, FaPinterest, FaTiktok, FaDiscord, FaTwitch, FaReddit, FaSteam, FaXbox, FaPlaystation, FaGithub
+} from 'react-icons/fa';
+
+const getSocialIcon = (socialName) => {
+  const iconProps = { color: 'white', size: 20 }; // Default icon color and size
+
+  switch (socialName) {
+    case 'Facebook':
+      return <FaFacebook {...iconProps} />;
+    case 'Twitter':
+      return <FaTwitter {...iconProps} />;
+    case 'Instagram':
+      return <FaInstagram {...iconProps} />;
+    case 'LinkedIn':
+      return <FaLinkedin {...iconProps} />;
+    case 'YouTube':
+      return <FaYoutube {...iconProps} />;
+    case 'Snapchat':
+      return <FaSnapchat {...iconProps} />;
+    case 'Pinterest':
+      return <FaPinterest {...iconProps} />;
+    case 'TikTok':
+      return <FaTiktok {...iconProps} />;
+    case 'Discord':
+      return <FaDiscord {...iconProps} />;
+    case 'Twitch':
+      return <FaTwitch {...iconProps} />;
+    case 'Reddit':
+      return <FaReddit {...iconProps} />;
+    case 'Steam':
+      return <FaSteam {...iconProps} />;
+    case 'Xbox':
+      return <FaXbox {...iconProps} />;
+    case 'PlayStation':
+      return <FaPlaystation {...iconProps} />;
+    case 'GitHub':
+      return <FaGithub {...iconProps} />;
+    default:
+      return null;
+  }
+};
+
+
 
 const DashboardLayout = ({ children }) => {
   const user = useSelector(selectUser);
@@ -55,6 +99,10 @@ const DashboardLayout = ({ children }) => {
   const [selectedGames, setSelectedGames] = useState(user?.gamesIntrest);
 
   const normalizedCoverImage = coverImage?.replace(/\\/g, '/');
+  const aboutText = user?.aboutMe || "";
+
+  // Truncate the text to 100 characters
+  const truncatedText = aboutText.length > 100 ? aboutText.slice(0, 100) + "..." : aboutText;
 
 
 
@@ -411,7 +459,7 @@ const DashboardLayout = ({ children }) => {
                     <input
                       id="cover-pic-upload"
                       type="file"
-                      accept="image/*"
+                      accept="image/*,image/svg+xml"
                       className="hidden"
                       onChange={(e)=> handleFileChange(e, 'cover') }
                     />
@@ -442,7 +490,7 @@ const DashboardLayout = ({ children }) => {
                       <div className="flex justify-center md:justify-start gap-6 items-center ">
                         {
                           user?.socialLinks?.map((social , index)=>(
-                           <a href={social?.link}  target="_blank" rel="noreferrer" >  <img src={FB} alt="img"/></a>
+                           <a href={social?.link}  target="_blank" rel="noreferrer" >{getSocialIcon(social?.socialName)}</a>
 
                           ))
                         }
@@ -460,7 +508,7 @@ const DashboardLayout = ({ children }) => {
                           </span>
                         </div>
                         <p className="text-[#C3C3C3] text-[12px] md:text-left text-center">
-                          {user?.aboutMe || ""}
+                          {truncatedText || ""}
                         </p>
                         <img
                           src={Plus}

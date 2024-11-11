@@ -211,6 +211,16 @@ const Dashboard = () => {
     e.preventDefault();
   
     console.log("advertisment form data", advertismentForm, "edit", isAdvertismentEdit);
+    const requiredFields = [
+      'genre', 'game', 'platform', 'date', 'time', 'playersRequired', 'price', 'rating', 'playerType', 'gamePlan', 'coverImage'
+    ];
+    const missingFields = requiredFields.filter(field => !advertismentForm[field]);
+
+    if (missingFields.length > 0) {
+      toast.error(`Missing fields: ${missingFields.join(', ')}`);
+      setLoading(false); 
+      return
+    }
   
     const url = isAdvertismentEdit
       ? `${ADVERTISMENT}/${advertismentId}` 

@@ -56,8 +56,14 @@ const Navbar = () => {
   const [otpLoading , setOtpLoading] = useState(false)
 
   const handleSubmitOTP = async() => {
+    
     setOtpLoading(true)
     const fullOTP = `${otpCode.otp1}${otpCode.otp2}${otpCode.otp3}${otpCode.otp4}`;
+    if(!otpCode.otp1 || !otpCode.otp2 || !otpCode.otp3 || !otpCode.otp4){
+      toast.error("Please fill all OTP fields");
+      setOtpLoading(false)
+      return
+    }
 
     try {
       const response = await httpRequest.post(VERIFY_OTP, {email: forgotEmail , otp: fullOTP });
@@ -235,6 +241,11 @@ const Navbar = () => {
 
   const handleForgotPassword = async () => {
     setForgotLoading(true)
+    if(forgotEmail === ''){
+      toast.error("Please enter your email")
+      setForgotLoading(false)
+      return
+    }
     try {
       const response = await httpRequest.post(FORGOT_PASSWORD, {
         email: forgotEmail,
@@ -256,6 +267,14 @@ const Navbar = () => {
   const [resetLoading , setResetLoading] = useState(false)
 
   const handleResetPassword = async() =>{
+    if(!resetPassword || !resetConfirmPassword){
+      toast.error("Please enter your new password and confirm password")
+      return
+    }
+    if(resetPassword !== resetConfirmPassword){
+      toast.error("Password and confirm password do not match")
+      return
+    }
     setResetLoading(true)
     try {
       const response = await httpRequest.post(RESET_PASSWORD, {

@@ -11,7 +11,6 @@ const AddSocialLinks = ({ addSocialLinkOpen, setAddSocialLinkOpen }) => {
   const user = useSelector(selectUser);
   const accessToken = useSelector(selectAccessToken);
 
-  // Initialize socialLinks with user data if available, or an empty object if not
   const [socialLinks, setSocialLinks] = useState(user?.socialLinks || [{ socialName: '', link: '' }]);
 
   const dispatch = useDispatch();
@@ -19,8 +18,10 @@ const AddSocialLinks = ({ addSocialLinkOpen, setAddSocialLinkOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const socialNames = [
-    'Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'YouTube', 'Snapchat', 'Pinterest', 'TikTok'
+    'Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'YouTube', 'Snapchat', 'Pinterest', 'TikTok',
+    'Discord', 'Twitch', 'Reddit', 'Steam', 'Xbox', 'PlayStation', 'GitHub'
   ];
+  
 
   useEffect(() => {
     if (user?.socialLinks) {
