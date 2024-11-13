@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosCloseCircle } from 'react-icons/io';
 import httpRequest from '../../axios';
 import { UPDATE_PROFILE } from '../../constants/apiEndPoints';
@@ -6,11 +6,13 @@ import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAccessToken, selectUser, setUser } from '../../store/userSlice';
 import useUnauthenticated from '../../hooks/useUnauthentication';
+import { FaPlus } from "react-icons/fa";
+
 
 const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
   const user = useSelector(selectUser);
   const accessToken = useSelector(selectAccessToken);
-  const [intrests, setIntrests] = useState(user?.intrests || []); 
+  const [intrests, setIntrests] = useState(user?.intrests || [{}]); 
   const dispatch = useDispatch();
   const handleUnauthenticated = useUnauthenticated();
   const [loading , setLoading] = useState(false)
@@ -20,11 +22,16 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
     setIntrests([...intrests, '']); 
   };
 
+  useEffect(() => {
+    handleAddIntrest()
+  },[])
+
   const handleChangeIntrest = (index, value) => {
     const newIntrests = [...intrests];
     newIntrests[index] = value;
     setIntrests(newIntrests); 
   };
+
 
   const handleDeleteIntrest = (index) => {
     const newIntrests = intrests.filter((_, i) => i !== index);
@@ -83,7 +90,7 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
                 <h1 className="text-4xl font-bold text-center text-white uppercase mb-10">
                   Add <span className="MainHeaderHeading">Intrests</span>
                 </h1>
-
+                <div className="w-full overflow-auto max-h-[400px]">
                 {/* Render input fields for each interest */}
                 {intrests.map((intrest, index) => (
                   <div key={index} className="mb-6 flex items-center">
@@ -97,17 +104,31 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
                       onChange={(e) => handleChangeIntrest(index, e.target.value)}
                       required
                     />
+                     {
+                    index == 0 ?
+                    <>
+                       <button
+                        type="button"
+                        onClick={handleAddIntrest}
+                        className="LoginBtn h-[35px] min-w-[35px] ml-2 rounded-tr-xl rounded-bl-xl uppercase text-sm flex justify-center items-center"
+                      >
+                        <FaPlus />
+                      </button>
+                    </>
+                    :
                     <button
                       type="button"
                       onClick={() => handleDeleteIntrest(index)}
-                      className="ml-2 text-red-500"
+                      className="ml-4 text-red-500"
                     >
-                      <IoIosCloseCircle color="red" size={20} />
+                      <IoIosCloseCircle color="red" size={26} />
                     </button>
+                     }
+                   
                   </div>
                 ))}
-
-                <div className="flex justify-center mt-4">
+                </div>
+                {/* <div className="flex justify-center mt-4">
                   <button
                     type="button"
                     onClick={handleAddIntrest}
@@ -115,7 +136,7 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
                   >
                     Add Interest
                   </button>
-                </div>
+                </div> */}
 
                 <div className="flex justify-center mt-8">
                   <button className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm" disabled={loading}  >

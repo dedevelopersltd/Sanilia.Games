@@ -45,12 +45,45 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  // const handleOTPCodeChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setOtpCode((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  //   if (value && name !== "otp4") {
+  //     const nextInput = document.querySelector(`[name=otp${parseInt(name.charAt(3)) + 1}]`);
+  //     if (nextInput) {
+  //       nextInput.focus();
+  //     }
+  //   }
+  // };
   const handleOTPCodeChange = (e) => {
     const { name, value } = e.target;
-    setOtpCode((prev) => ({
-      ...prev,
+
+    // Only update if the value is a digit (0-9)
+    if (value && !/^\d$/.test(value)) return;
+
+    setOtpCode((prevOtpCode) => ({
+      ...prevOtpCode,
       [name]: value,
     }));
+
+    // Move to the next input field automatically
+    if (value && name !== "otp4") {
+      const nextInput = document.querySelector(`[name=otp${parseInt(name.charAt(3)) + 1}]`);
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }
+  };
+  const handleKeyUp = (e) => {
+    if (e.key === "Backspace") {
+      const prevInput = document.querySelector(`[name=otp${parseInt(e.target.name.charAt(3)) - 1}]`);
+      if (prevInput) {
+        prevInput.focus();
+      }
+    }
   };
 
   const [otpLoading , setOtpLoading] = useState(false)
@@ -173,6 +206,10 @@ const Navbar = () => {
  const [registerLoading , setRegisterLoading] = useState(false)
   // Handle form submit
   const handleRegister = async (e) => {
+    if(!formData.firstName || !formData.lastName || !formData.email || !formData.password){
+      toast.error("Please fill all fields");
+      return
+    }
     e.preventDefault();
     setRegisterLoading(true)
     console.log("Form Data:", formData);
@@ -521,97 +558,100 @@ const Navbar = () => {
                 <h1 className="text-4xl font-bold text-center text-white uppercase mb-10">
                   Sign <span className="MainHeaderHeading">up</span>
                 </h1>
-                <div className="mb-6 flex justify-between items-center gap-4 w-full">
-                  <input
-                    type="text"
-                    name="firstName"
-                    className="popup_input_custom w-full"
-                    placeholder="First Name"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange}
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    className="popup_input_custom w-full"
-                    placeholder="Last Name"
-                    required
-                    value={formData.lastName}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-6">
-                  <input
-                    type="email"
-                    name="email"
-                    className="popup_input_custom w-full"
-                    placeholder="Email Address"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-6">
-                  <input
-                    type="password"
-                    name="password"
-                    className="popup_input_custom w-full"
-                    placeholder="Password"
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-6">
-                  <select
-                    name="games"
-                    className="popup_input_custom w-full uppercase selectoption"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Select Games You are interested?</option>
-                    {gamesList.map((game) => (
-                      <option
-                        key={game.id}
-                        value={game.id}
-                        disabled={formData.gamesIntrest.some(
-                          (selected) => selected.id === game.id
-                        )}
+                <div className="w-full overflow-auto max-h-[450px]">
+                    <div className="mb-6 flex justify-between items-center gap-4 w-full">
+                      <input
+                        type="text"
+                        name="firstName"
+                        className="popup_input_custom w-full"
+                        placeholder="First Name"
+                        required
+                        value={formData.firstName}
+                        onChange={handleChange}
+                      />
+                      <input
+                        type="text"
+                        name="lastName"
+                        className="popup_input_custom w-full"
+                        placeholder="Last Name"
+                        required
+                        value={formData.lastName}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <input
+                        type="email"
+                        name="email"
+                        className="popup_input_custom w-full"
+                        placeholder="Email Address"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <input
+                        type="password"
+                        name="password"
+                        className="popup_input_custom w-full"
+                        placeholder="Password"
+                        required
+                        value={formData.password}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  
+                    <div className="mb-6">
+                      <select
+                        name="gameLevel"
+                        className="popup_input_custom w-full uppercase selectoption"
+                        onChange={handleChange}
                       >
-                        {game.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-6">
-                  <select
-                    name="gameLevel"
-                    className="popup_input_custom w-full uppercase selectoption"
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Your Game Level</option>
-                    <option value="Master">Master</option>
-                    <option value="Normal Player">Normal Player</option>
-                  </select>
-                </div>
-                {formData.gamesIntrest.length > 0 && (
-                  <div className="flex flex-wrap gap-2 items-center">
-                    {formData.gamesIntrest.map((game, index) => (
-                      <span
-                        key={index}
-                        className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                        <option value="" disabled>I am a?</option>
+                        <option value="Master">Game Master (GM)</option>
+                        <option value="Normal Player">Player</option>
+                      </select>
+                    </div>
+                    <div className="mb-6">
+                      <select
+                        name="games"
+                        className="popup_input_custom w-full uppercase selectoption"
+                        onChange={handleSelectChange}
                       >
-                        {game}
-                        <IoMdCloseCircleOutline
-                          color="#F36464"
-                          className="cursor-pointer"
-                          onClick={() => removeGame(index)}
-                        />
-                      </span>
-                    ))}
-                  </div>
-                )}
-                <div className="flex justify-center mt-8">
+                        <option value="" disabled>Select Games You are interested?</option>
+                        {gamesList.map((game) => (
+                          <option
+                            key={game.id}
+                            value={game.id}
+                            disabled={formData.gamesIntrest.some(
+                              (selected) => selected.id === game.id
+                            )}
+                          >
+                            {game.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {formData.gamesIntrest.length > 0 && (
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {formData.gamesIntrest.map((game, index) => (
+                          <span
+                            key={index}
+                            className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                          >
+                            {game}
+                            <IoMdCloseCircleOutline
+                              color="#F36464"
+                              className="cursor-pointer"
+                              onClick={() => removeGame(index)}
+                            />
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                </div>
+                <div className="flex justify-center mt-4">
                   <button
                     type="submit"
                     className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm"
@@ -620,7 +660,7 @@ const Navbar = () => {
                     {registerLoading ? 'Loading...' : 'CREATE ACCOUNT'}
                   </button>
                 </div>
-                <div className="mt-6 text-center">
+                <div className="mt-2 text-center">
                   <Link
                     to="/"
                     className="text-white text-[12px] text-right hover:text-gray-300"
@@ -684,6 +724,48 @@ const Navbar = () => {
                     Please enter the OTP you have received!
                   </p>
                   <div className="flex justify-center mb-6 gap-4 custom_input_flex">
+                      <input
+                        type="text"
+                        name="otp1"
+                        className="popup_input_custom_otp"
+                        value={otpCode.otp1}
+                        onChange={handleOTPCodeChange}
+                        onKeyUp={handleKeyUp}
+                        maxLength="1"
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="otp2"
+                        className="popup_input_custom_otp"
+                        value={otpCode.otp2}
+                        onChange={handleOTPCodeChange}
+                        onKeyUp={handleKeyUp}
+                        maxLength="1"
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="otp3"
+                        className="popup_input_custom_otp"
+                        value={otpCode.otp3}
+                        onChange={handleOTPCodeChange}
+                        onKeyUp={handleKeyUp}
+                        maxLength="1"
+                        required
+                      />
+                      <input
+                        type="text"
+                        name="otp4"
+                        className="popup_input_custom_otp"
+                        value={otpCode.otp4}
+                        onChange={handleOTPCodeChange}
+                        onKeyUp={handleKeyUp}
+                        maxLength="1"
+                        required
+                      />
+                    </div>
+                  {/* <div className="flex justify-center mb-6 gap-4 custom_input_flex">
                     <input
                       type="text"
                       name="otp1"
@@ -716,7 +798,7 @@ const Navbar = () => {
                       onChange={handleOTPCodeChange}
                       required
                     />
-                  </div>
+                  </div> */}
                 </>
               )}
 

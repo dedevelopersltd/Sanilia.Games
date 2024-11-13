@@ -29,7 +29,7 @@ const ChangePassword = ({ changePasswordOpen, setChangePasswordOpen }) => {
 
         try {
             const response = await httpRequest.post(CHANGE_PASSWORD, 
-                {email, currentPassword, newPassword },
+                {email, currentPassword, newPassword, confirmPassword },
                 {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,

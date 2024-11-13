@@ -32,9 +32,13 @@ import AddSocialLinks from "../../components/popups/add-social-links";
 import { 
   FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaSnapchat, FaPinterest, FaTiktok, FaDiscord, FaTwitch, FaReddit, FaSteam, FaXbox, FaPlaystation, FaGithub
 } from 'react-icons/fa';
+import { LuFolderEdit } from "react-icons/lu";
+import { FiEdit } from "react-icons/fi";
+
+
 
 const getSocialIcon = (socialName) => {
-  const iconProps = { color: 'white', size: 20 }; // Default icon color and size
+  const iconProps = { color: 'white', size: 26 }; // Default icon color and size
 
   switch (socialName) {
     case 'Facebook':
@@ -420,7 +424,7 @@ const DashboardLayout = ({ children }) => {
                         <li>
                           <div
                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-                            onClick={()=> setChangePasswordOpen(true)}
+                            onClick={()=> { setDropdown(false); setChangePasswordOpen(true)}}
                           >
                             Change Password
                           </div>
@@ -444,17 +448,20 @@ const DashboardLayout = ({ children }) => {
           <div className="w-full relative">
             <div
               style={{
-                backgroundImage: shouldHide ? "none" : `url(${normalizedCoverImage || UserBg })`,
+                backgroundImage: shouldHide ? "none" : `linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${normalizedCoverImage || UserBg })`,
               }}
               className={`bg-cover bg-center w-full ${
                 shouldHide ? "h-0" : "h-[600px] md:h-[450px]"
               } relative flex flex-col justify-end`}
             >
-              <label
+                {shouldHide ? "" :
+                <>
+              
+                    <label
                       htmlFor="cover-pic-upload"
-                      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600 w-20"
+                      className="text-[#929292] text-sm absolute right-0 top-0 flex items-center gap-2 p-4 cursor-pointer hover:text-white"
                     >
-                      Update Cover Image
+                      <LuFolderEdit color={'white'} /> Update Cover
                     </label>
                     <input
                       id="cover-pic-upload"
@@ -463,11 +470,14 @@ const DashboardLayout = ({ children }) => {
                       className="hidden"
                       onChange={(e)=> handleFileChange(e, 'cover') }
                     />
+                  </>
+                }
               {shouldHide ? (
                 ""
               ) : (
                 <div className="flex justify-between items-start md:items-center mb-6 mx-auto w-11/12 flex-col md:flex-row">
-                  <div className="flex items-center gap-10 flex-col md:flex-row w-full md:w-[50%]">
+                  <div className="flex items-center gap-6 flex-col md:flex-row w-full md:w-[50%]">
+                    <div className="relative w-72">
                     <img
                       src={profileImage || UserIcon}
                       alt="pp"
@@ -475,9 +485,9 @@ const DashboardLayout = ({ children }) => {
                     />
                     <label
                       htmlFor="profile-pic-upload"
-                      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600"
+                      className="text-[#929292] text-sm absolute right-6 top-2 flex items-center gap-2 p-2 cursor-pointer hover:text-white bg-[#fff] rounded-full hover:bg-[#12d277]"
                     >
-                      Update Profile
+                      <LuFolderEdit color={'black'} size={18} />
                     </label>
                     <input
                       id="profile-pic-upload"
@@ -486,8 +496,9 @@ const DashboardLayout = ({ children }) => {
                       className="hidden"
                       onChange={e => handleFileChange(e, 'profile') }
                     />
+                    </div>
                     <div className="">
-                      <div className="flex justify-center md:justify-start gap-6 items-center ">
+                      <div className="flex justify-center md:justify-start gap-4 items-center ">
                         {
                           user?.socialLinks?.map((social , index)=>(
                            <a href={social?.link}  target="_blank" rel="noreferrer" >{getSocialIcon(social?.socialName)}</a>
@@ -496,64 +507,91 @@ const DashboardLayout = ({ children }) => {
                         }
                         {/* <img src={Social2} alt="img"/> */}
                         {/* <img src={Youtube} alt="img"/> */}
-                        <img src={Plus} alt="img"  onClick={()=> setAddSocialLinkOpen(true)}/>
+                        <div className={`cursor-pointer flex items-center ${user?.socialLinks.length == 0 ? 'gap-2': ''}`} onClick={()=> setAddSocialLinkOpen(true)}>
+                          <img src={Plus} alt="add" />
+                          {
+                            user?.socialLinks.length == 0 &&
+                            <>
+                              <span className="text-white text-xs">Add Social Media Links</span>
+                            </>
+                          }
+                        </div>
                       </div>
                       <div className="mt-5">
                         <div className="mb-2 flex items-center gap-3 justify-center md:justify-start">
                           <h1 className="text-white text-2xl font-semibold">
-                            {user?.firstName}
+                            {user?.firstName} {user?.lastName}
                           </h1>
                           <span className="text-[#C3C3C3] text-[12px]">
                             She/Him
                           </span>
                         </div>
-                        <p className="text-[#C3C3C3] text-[12px] md:text-left text-center">
+                        <p className="text-[#C3C3C3] text-[12px] md:text-left text-center flex items-center">
                           {truncatedText || ""}
+                          <div className={`cursor-pointer flex items-center ${aboutText.length == 0 ? 'gap-2': ''}`} onClick={() => setAboutMeOpen(true)}>
+                          {
+                            aboutText.length > 0 ?
+                            <>
+                             <FiEdit className="ml-2" color={'white'} />
+                            </>
+                            :
+                            <img
+                              src={Plus}
+                              alt="img"
+                            />
+                          }
+                          
+                          {
+                            aboutText.length == 0 &&
+                              <>
+                                <span className="text-white text-xs">Write About me</span>
+                              </>
+                            }
+                          </div>
                         </p>
-                        <img
-                          src={Plus}
-                          alt="img"
-                          onClick={() => setAboutMeOpen(true)}
-                        />
+                        
                       </div>
-                      <div className="flex justify-center md:justify-start items-center gap-2 mt-3 mb-3 md:mb-0">
+                      
+                    </div>
+                  </div>
+                  <div className="w-full md:w-auto">
+                    <div className="text-semibold text-white text-sm">
+                      Interests
+                    </div>
+                    <div className="flex justify-center md:justify-start items-center gap-2">
+                      <div className={`flex justify-center md:justify-start items-center gap-2 mt-3 mb-3 md:mb-4 ${(user?.intrests).length > 3 && 'overflow-auto w-72'}`}>
                         {
                           user?.intrests?.map((intrest , index)=>(
                             <div key={index} className="custom_pills_dashboard">{intrest}</div>
 
                           ))
                         }
+                      </div>
                         {/* <div className="custom_pills_dashboard">Gaming</div>
                         <div className="custom_pills_dashboard">Racing</div> */}
                         <img src={Plus} alt="add"
                           onClick={() => setAddIntrestOpen(true)}
                           />
                       </div>
-                    </div>
-                  </div>
-                  <div className="w-full md:w-auto">
-                    <div className="text-semibold text-white text-sm">
-                      Intresting
-                    </div>
-                    <div className="flex justify-center md:justify-start items-center gap-2 mt-3 mb-4">
+                    {/* <div className="flex justify-center md:justify-start items-center gap-2 mt-3 mb-4">
                       <div className="custom_pills_dashboard">Tycoon</div>
                       <div className="custom_pills_dashboard">Gaming</div>
                       <div className="custom_pills_dashboard">Racing</div>
                       <img src={Plus} />
-                    </div>
+                    </div> */}
                     <div className="text-semibold text-white text-sm">
                       Ratings
                     </div>
 
                     <div className="flex justify-center md:justify-start items-center gap-2 mt-3 mb-4">
-                      <FaStar color="#FFB571" size={20} />
-                      <FaStar color="#FFB571" size={20} />
-                      <FaRegStarHalfStroke color="#FFB571" size={20} />
+                      <FaRegStar color="white" size={20} />
+                      <FaRegStar color="white" size={20} />
+                      <FaRegStar color="white" size={20} />
                       <FaRegStar color="white" size={20} />
                       <FaRegStar color="white" size={20} />
                       <div className="text-white ml-2">
-                        <span className="font-semibold">3.5</span>
-                        <span className="text-[12px] ml-2">(234)</span>
+                        <span className="font-semibold">0</span>
+                        <span className="text-[12px] ml-2">(0)</span>
                       </div>
                     </div>
                   </div>
