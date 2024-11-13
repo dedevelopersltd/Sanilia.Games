@@ -31,6 +31,7 @@ import {
   CREATE_ADVERTISMENT,
   ADVERTISMENT,
 } from "../../constants/apiEndPoints";
+import ConfirmationModal from "../../components/popups/confirmation-modal";
 
 const Dashboard = () => {
   const accessToken = useSelector(selectAccessToken);
@@ -43,6 +44,7 @@ const Dashboard = () => {
   const [showpopup, setShowPopup] = useState(false);
   const [coverImageName, setCoverImageName] = useState('');
   const [isAdvertismentEdit, setIsAdvertismentEdit] = useState(false);
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [advertismentId, setAdvertismentId] = useState(null);
   const [advertismentForm, setAdvertismentForm] = useState({
     genre: "",
@@ -280,12 +282,12 @@ const Dashboard = () => {
 
   }
 
-  const handleDeleteAdvertisment = async (id) => {
+  const handleDeleteAdvertisment = async () => {
 
 
     try {
       const response = await httpRequest.delete(
-        `${ADVERTISMENT}/${id}`,
+        `${ADVERTISMENT}/${advertismentId}`,
        
         {
           headers: {
@@ -296,6 +298,7 @@ const Dashboard = () => {
       if (response.status === 200 || response.status === 201) {
         toast.success(response?.data?.message);
         getAdvertisments()
+        setAdvertismentId(null)
         handleCloseAdvertismentPopup()
       }
     } catch (error) {
@@ -465,7 +468,7 @@ const Dashboard = () => {
                           </Link>
                           <Link className="flex justify-start items-center gap-4 p-2 border-b border-b-[#2e2e2e]">
                             <RiDeleteBin6Line />
-                            <span className="text-gray-400 text-sm" onClick={()=> handleDeleteAdvertisment(item?._id)}>
+                            <span className="text-gray-400 text-sm" onClick={()=> {setConfirmationModalOpen(true); setAdvertismentId(item?._id)}}>
                               Delete
                             </span>
                           </Link>
@@ -533,8 +536,16 @@ const Dashboard = () => {
                       onChange={handleChange}
                     >
                       <option>--Choose Game--</option>
-                      <option>Blades in the Dark</option>
-                      <option>Blades in the Dark</option>
+                      <option>Assassins Creed</option>
+                      <option>Red Dead Redemption 2</option>
+                      <option>Grand Theft Auto V</option>
+                      <option>Resident Evil 2</option>
+                      <option>The Last of Us</option>
+                      <option>The Legend of Zelda</option>
+                      <option>Uncharted 4</option>
+                      <option>Uncharted 5</option>
+                      <option>The Last of Us Part II</option>
+                      <option>God of War</option>
                     </select>
                   </div>
                 </div>
@@ -568,6 +579,7 @@ const Dashboard = () => {
                         type="date"
                         className="w-full advertisement_inputs"
                         name="date"
+                        min={new Date().toISOString().split("T")[0]} 
                         value={advertismentForm.date}
                         onChange={handleChange}
                       />
@@ -707,6 +719,9 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+    <ConfirmationModal  isOpen={confirmationModalOpen} 
+  setIsOpen={setConfirmationModalOpen} 
+  onConfirm={handleDeleteAdvertisment}  />
     </DashboardLayout>
   );
 };

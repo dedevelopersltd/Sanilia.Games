@@ -165,7 +165,7 @@ const Navbar = () => {
     lastName: "",
     email: "",
     password: "",
-    gameLevel: "",
+    gameLevel: "Master",
     gamesIntrest: [],
   });
 
@@ -178,23 +178,29 @@ const Navbar = () => {
   // Handle game selection
   const handleSelectChange = (event) => {
     const selectedGameId = event.target.value;
+    console.log('selectedGameId', selectedGameId);
+    
     const selectedGame = gamesList.find(
       (game) => game.id.toString() === selectedGameId
     );
-
+    
+    console.log('selectedGame', selectedGame);
+    
     if (
       selectedGame &&
       !formData.gamesIntrest.some((game) => game.id === selectedGame.id)
     ) {
       setFormData({
         ...formData,
-        gamesIntrest: [...formData.gamesIntrest, selectedGame.name],
+        gamesIntrest: [...formData.gamesIntrest, selectedGame], // Create a new array with spread syntax
       });
     }
-
+    
+    console.log('games', formData.gamesIntrest);
+    
     event.target.value = ""; // Reset the select to default
   };
-
+  
   // Remove game from selected games
   const removeGame = (id) => {
     setFormData({
@@ -206,9 +212,15 @@ const Navbar = () => {
  const [registerLoading , setRegisterLoading] = useState(false)
   // Handle form submit
   const handleRegister = async (e) => {
-    if(!formData.firstName || !formData.lastName || !formData.email || !formData.password){
+    if(!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.gameLevel || !formData.gamesIntrest){
       toast.error("Please fill all fields");
       return
+    }
+    if(formData?.password?.length < 8){
+      toast.error("Password must be of 8 characters.");
+      e.preventDefault();
+      return
+
     }
     e.preventDefault();
     setRegisterLoading(true)
@@ -624,7 +636,7 @@ const Navbar = () => {
                           <option
                             key={game.id}
                             value={game.id}
-                            disabled={formData.gamesIntrest.some(
+                            disabled={formData.gamesIntrest.length > 0 && formData?.gamesIntrest?.some(
                               (selected) => selected.id === game.id
                             )}
                           >
@@ -635,12 +647,12 @@ const Navbar = () => {
                     </div>
                     {formData.gamesIntrest.length > 0 && (
                       <div className="flex flex-wrap gap-2 items-center">
-                        {formData.gamesIntrest.map((game, index) => (
+                        {formData?.gamesIntrest?.map((game, index) => (
                           <span
-                            key={index}
+                            key={game.id}
                             className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
                           >
-                            {game}
+                            {game.name}
                             <IoMdCloseCircleOutline
                               color="#F36464"
                               className="cursor-pointer"

@@ -424,7 +424,7 @@ const DashboardLayout = ({ children }) => {
                         <li>
                           <div
                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-                            onClick={()=> { setDropdown(false); setChangePasswordOpen(true)}}
+                            onClick={()=> { setChangePasswordOpen(true); setDropdown(false); }}
                           >
                             Change Password
                           </div>
