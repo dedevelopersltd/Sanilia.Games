@@ -16,7 +16,7 @@ const VerifyEmail = () => {
         try {
           const response = await httpRequest.get(`${VERIFY_EMAIL}/${token}`);
           if (response.status === 200 || response.status === 201 ) {
-            toast.success('Email Verified Successfully')
+            toast.success(response.data.message || 'Email Verified Successfully')
             navigate('/');
           } 
         } catch (error) {
