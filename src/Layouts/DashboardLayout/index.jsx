@@ -230,11 +230,33 @@ const DashboardLayout = ({ children }) => {
       selectedGame &&
       !selectedGames.some((game) => game.id === selectedGame.id)
     ) {
-      setSelectedGames([...selectedGames, selectedGame.name]);
+      setSelectedGames([...selectedGames, selectedGame]);
     }
     // console.log(selectedGames);
     event.target.value = ""; // Reset the select to default
   };
+
+  // const handleSelectChange = (event) => {
+  //   const selectedGameId = event.target.value;
+  //   console.log('selectedGameId', selectedGameId);
+    
+  //   const selectedGame = gamesList.find(
+  //     (game) => game.id.toString() === selectedGameId
+  //   );
+    
+  //   console.log('selectedGame', selectedGame);
+    
+  //   if (
+  //     selectedGame &&
+  //     !formData.gamesIntrest.some((game) => game.id === selectedGame.id)
+  //   ) {
+  //     setSelectedGames([...selectedGames, selectedGame]);
+  //   }
+    
+  //   console.log('games', formData.gamesIntrest);
+    
+  //   event.target.value = ""; // Reset the select to default
+  // };
 
   const removeGame = (id) => {
     setSelectedGames(selectedGames.filter((game , index) => index !== id));
@@ -677,7 +699,7 @@ const DashboardLayout = ({ children }) => {
                         key={index}
                         className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
                       >
-                        {game}
+                        {game.name}
                         <IoMdCloseCircleOutline
                           color="#F36464"
                           className="cursor-pointer"
