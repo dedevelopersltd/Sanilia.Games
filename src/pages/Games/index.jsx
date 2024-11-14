@@ -392,6 +392,27 @@ const Dashboard = () => {
             </p>
           </div>
 
+          {userAdvertisments?.length === 0 && (
+            <div className="flex justify-center flex-col items-center gap-2 w-full mt-10">
+                <div className="text-[#8a8a8a] text-lg">
+                  No advertisements for games were found
+                </div>
+                <div className="text-[#8a8a8a] text-sm mt-4">
+                  Become the first to post a game advertisement!
+                </div>
+
+                <div
+                  className="mt-4 flex flex-col gap-3"
+                  onClick={() => setShowPopup(true)}
+                >
+                  <button className="LoginBtn text-white CorenerRound h-[50px] w-[200px] text-[14px] font-normal leading-normal tracking-[0.26px] capitalize">
+                    New Advertisment
+                  </button>
+                </div>
+
+            </div>
+          )}
+
           <div>
             {userAdvertisments?.map((item, index) => (
               <div className="border  CorenerRound custom_bg_dashboard p-6 text-white mb-3 w-full flex justify-between items-center md:flex-row flex-col gap-6 md:gap-0">
@@ -519,7 +540,9 @@ const Dashboard = () => {
                     >
                       <option>--Choose Genre--</option>
                       <option>High Fantasy</option>
-                      <option>High Fantasy</option>
+                      <option>Low Fantasy</option>
+                      <option>Adult</option>
+                      <option>10-13+</option>
                     </select>
                   </div>
                   <div className="w-1/2">

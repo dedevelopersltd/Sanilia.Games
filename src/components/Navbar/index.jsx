@@ -620,7 +620,7 @@ const Navbar = () => {
                         className="popup_input_custom w-full uppercase selectoption"
                         onChange={handleChange}
                       >
-                        <option value="" disabled>I am a?</option>
+                        <option value="">I am a?</option>
                         <option value="Master">Game Master (GM)</option>
                         <option value="Normal Player">Player</option>
                       </select>
@@ -631,7 +631,7 @@ const Navbar = () => {
                         className="popup_input_custom w-full uppercase selectoption"
                         onChange={handleSelectChange}
                       >
-                        <option value="" disabled>Select Games You are interested?</option>
+                        <option value="">Select Games You are interested?</option>
                         {gamesList.map((game) => (
                           <option
                             key={game.id}

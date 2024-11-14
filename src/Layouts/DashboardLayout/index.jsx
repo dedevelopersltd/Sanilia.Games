@@ -125,7 +125,7 @@ const DashboardLayout = ({ children }) => {
       };
       reader.readAsDataURL(file);
 
-      console.log('token' ,  accessToken)
+      // console.log('token' ,  accessToken)
   
       try {
         // const formData = new FormData();
@@ -232,7 +232,7 @@ const DashboardLayout = ({ children }) => {
     ) {
       setSelectedGames([...selectedGames, selectedGame.name]);
     }
-    console.log(selectedGames);
+    // console.log(selectedGames);
     event.target.value = ""; // Reset the select to default
   };
 
@@ -476,12 +476,12 @@ const DashboardLayout = ({ children }) => {
                 ""
               ) : (
                 <div className="flex justify-between items-start md:items-center mb-6 mx-auto w-11/12 flex-col md:flex-row">
-                  <div className="flex items-center gap-6 flex-col md:flex-row w-full md:w-[50%]">
-                    <div className="relative w-72">
+                  <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-[50%]">
+                    <div className="relative w-[200px]">
                     <img
                       src={profileImage || UserIcon}
                       alt="pp"
-                      className="h-36 w-36 md:h-48 md:w-48 rounded-full object-cover border-4 border-[#E6E6E6]"
+                      className="h-36 w-36 md:h-[150px] md:w-[150px] rounded-full object-cover border-4 border-[#E6E6E6]"
                     />
                     <label
                       htmlFor="profile-pic-upload"
@@ -497,7 +497,7 @@ const DashboardLayout = ({ children }) => {
                       onChange={e => handleFileChange(e, 'profile') }
                     />
                     </div>
-                    <div className="">
+                    <div className="w-[90%]">
                       <div className="flex justify-center md:justify-start gap-4 items-center ">
                         {
                           user?.socialLinks?.map((social , index)=>(
@@ -523,7 +523,7 @@ const DashboardLayout = ({ children }) => {
                             {user?.firstName} {user?.lastName}
                           </h1>
                           <span className="text-[#C3C3C3] text-[12px]">
-                            She/Him
+                            {/* She/Him */}
                           </span>
                         </div>
                         <p className="text-[#C3C3C3] text-[12px] md:text-left text-center flex items-center">
@@ -559,7 +559,7 @@ const DashboardLayout = ({ children }) => {
                       Interests
                     </div>
                     <div className="flex justify-center md:justify-start items-center gap-2">
-                      <div className={`flex justify-center md:justify-start items-center gap-2 mt-3 mb-3 md:mb-4 ${(user?.intrests).length > 3 && 'overflow-auto w-72'}`}>
+                      <div className={`flex justify-center md:justify-start items-center gap-2 mt-3 mb-3 ${ (user?.intrests).length == 0 ?'md:mb-8' : 'md:mb-4' }  ${(user?.intrests).length > 3 && 'overflow-auto w-72 mb-4'}`}>
                         {
                           user?.intrests?.map((intrest , index)=>(
                             <div key={index} className="custom_pills_dashboard">{intrest}</div>
