@@ -15,6 +15,8 @@ import {
 } from "../../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -31,6 +33,8 @@ const Navbar = () => {
   const [password, setPassword] = useState("");
   const [resetPassword, setResetPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const [resetConfirmPassword, setResetConfirmPassword] = useState("");
   const [otpCode, setOtpCode] = useState({
     otp1: "",
@@ -144,6 +148,7 @@ const Navbar = () => {
     setOTP(false);
     setChangePass(false);
     setSignup(false);
+    setShowPassword(false)
   };
 
   // const [gamesIntrest, setgamesIntrest] = useState([]);
@@ -173,6 +178,16 @@ const Navbar = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    // Password validation regex
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (name === "password") {
+      if (!passwordRegex.test(value)) {
+        setPasswordError("Password must be at least 8 characters long and include a capital letter, a number, and a special character.");
+      } else {
+        setPasswordError("");
+      }
+    }
   };
 
   // Handle game selection
@@ -285,7 +300,7 @@ const Navbar = () => {
     }
   };
 
-  console.log("user is", user, " is logged in", isLoggedIn);
+  // console.log("user is", user, " is logged in", isLoggedIn);
  const [forgotLoading , setForgotLoading] = useState(false)
 
   const handleForgotPassword = async () => {
@@ -505,9 +520,9 @@ const Navbar = () => {
                     required
                   />
                 </div>
-                <div class="mb-2">
+                <div class="mb-2 relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     class="popup_input_custom w-full"
@@ -515,6 +530,13 @@ const Navbar = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+                   <div className="absolute right-4 top-[50%] transform -translate-y-1/2 cursor-pointer">
+                        {
+                          showPassword ?
+                          <FaEye color="white" size={20} onClick={() => setShowPassword(false)} /> :
+                          <FaEyeSlash color="white" size={20} onClick={() => setShowPassword(true)} />
+                        }
+                      </div>
                 </div>
                 <div className="mb-6 text-right">
                   <Link
@@ -602,9 +624,9 @@ const Navbar = () => {
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 relative">
                       <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="password"
                         className="popup_input_custom w-full"
                         placeholder="Password"
@@ -612,7 +634,19 @@ const Navbar = () => {
                         value={formData.password}
                         onChange={handleChange}
                       />
+                      <div className="absolute right-4 top-[50%] transform -translate-y-1/2 cursor-pointer">
+                        {
+                          showPassword ?
+                          <FaEye color="white" size={20} onClick={() => setShowPassword(false)} /> :
+                          <FaEyeSlash color="white" size={20} onClick={() => setShowPassword(true)} />
+                        }
+                      </div>
+
+                     
                     </div>
+                    {passwordError && (
+                        <p className="text-red-500 text-xs mb-4">{passwordError}</p>
+                    )}
                   
                     <div className="mb-6">
                       <select
@@ -667,7 +701,7 @@ const Navbar = () => {
                   <button
                     type="submit"
                     className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm"
-                    disabled = {registerLoading}
+                    disabled = {registerLoading || passwordError}
                   >
                     {registerLoading ? 'Loading...' : 'CREATE ACCOUNT'}
                   </button>
@@ -819,9 +853,9 @@ const Navbar = () => {
                   <p className="text-white text-center text-[11px] mb-8">
                     Fill below form to update your new password!
                   </p>
-                  <div class="mb-6">
+                  <div class="mb-6 relative">
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="resetPassword"
                       class="popup_input_custom w-full"
                       placeholder="New Password"
@@ -829,16 +863,30 @@ const Navbar = () => {
 
                       required
                     />
+                     <div className="absolute right-4 top-[50%] transform -translate-y-1/2 cursor-pointer">
+                        {
+                          showPassword ?
+                          <FaEye color="white" size={20} onClick={() => setShowPassword(false)} /> :
+                          <FaEyeSlash color="white" size={20} onClick={() => setShowPassword(true)} />
+                        }
+                      </div>
                   </div>
-                  <div class="mb-6">
+                  <div class="mb-6 relative">
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="resetConfirmPassword"
                       class="popup_input_custom w-full"
                       placeholder="Confirm Password"
                       onChange={e => setResetConfirmPassword(e.target.value)}
                       required
                     />
+                    <div className="absolute right-4 top-[50%] transform -translate-y-1/2 cursor-pointer">
+                        {
+                          showPassword ?
+                          <FaEye color="white" size={20} onClick={() => setShowPassword(false)} /> :
+                          <FaEyeSlash color="white" size={20} onClick={() => setShowPassword(true)} />
+                        }
+                      </div>
                   </div>
                 </>
               )}

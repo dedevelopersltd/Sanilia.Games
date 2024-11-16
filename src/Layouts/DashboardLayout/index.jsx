@@ -204,7 +204,8 @@ const DashboardLayout = ({ children }) => {
   const lastSlashIndex = path.lastIndexOf("/");
   const slugFromUrl =
     lastSlashIndex !== -1 ? path.substring(lastSlashIndex + 1) : "";
-  const array_include = ["my", "games", "wallet", "chat"];
+    console.log("slugFromUrl", slugFromUrl);
+  const array_include = ["my", "games", "wallet", "chat", "update"];
   const shouldHide = array_include.some((value) => slugFromUrl.includes(value));
 
   const gamesList = [
@@ -370,8 +371,9 @@ const DashboardLayout = ({ children }) => {
                     style={{ width: "30px", height: "30px" }}
                   />
                 </Link>
-                <div
-                  onClick={() => setSignup(true)}
+                <Link
+                  to="/profile/update"
+                  // onClick={() => setSignup(true)}
                   className={`icon_rounded ${
                     slugFromUrl == "profile" ? "active" : ""
                   }`}
@@ -382,7 +384,7 @@ const DashboardLayout = ({ children }) => {
                     colors="primary:#ffffff"
                     style={{ width: "30px", height: "30px" }}
                   />
-                </div>
+                </Link>
               </div>
             </div>
 

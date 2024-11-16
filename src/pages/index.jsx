@@ -6,5 +6,6 @@ import Games from "./Games";
 import Wallet from "./Wallet";
 import Chat from "./Chat";
 import GameDetails from "./GameDetails";
+import UpdateProfile from "./UpdateProfile";
 
-export { Home, Advertisement, Static, Dashboard, Games, Wallet, Chat, GameDetails };
+export { Home, Advertisement, Static, Dashboard, Games, Wallet, Chat, GameDetails, UpdateProfile };
