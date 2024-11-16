@@ -16,6 +16,8 @@ import useUnauthenticated from "../../hooks/useUnauthentication";
 import { LuFolderEdit } from "react-icons/lu";
 import AddIntrest from "../../components/popups/intrests";
 import AddSocialLinks from "../../components/popups/add-social-links";
+import UserIcon from "./../../assets/images/master.jpg";
+import Plus from "./../../assets/images/plus.svg";
 
 const UpdateProfile = () => {
   const user = useSelector(selectUser);
@@ -44,10 +46,11 @@ const UpdateProfile = () => {
   const [addIntrestOpen, setAddIntrestOpen] = useState(false);
   const [addSocialLinkOpen, setAddSocialLinkOpen] = useState(false);
   const [userIntrests, setUserIntrests] = useState(user?.intrests);
-  const [userSocialLinks, setUserSocialLinks] = useState(user?.socialLinks || []);
+  const [userSocialLinks, setUserSocialLinks] = useState(
+    user?.socialLinks || []
+  );
 
-
-console.log('user intre', userIntrests , ' user links', userSocialLinks)
+  console.log("user intre", userIntrests, " user links", userSocialLinks);
 
   const normalizedCoverImage = coverImage?.replace(/\\/g, "/");
   const aboutText = user?.aboutMe || "";
@@ -99,15 +102,12 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-          setProfileImage(reader.result);
-
-        }
+        setProfileImage(reader.result);
+      };
       reader.readAsDataURL(file);
-      setImage(file)
+      setImage(file);
 
       // console.log('token' ,  accessToken)
-  
-     
     }
   };
 
@@ -117,10 +117,18 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
     try {
       const response = await httpRequest.put(
         UPDATE_PROFILE,
-        { firstName, lastName, gamesIntrest: selectedGames, aboutMe , intrests: userIntrests   , image , socialLinks: userSocialLinks},
+        {
+          firstName,
+          lastName,
+          gamesIntrest: selectedGames,
+          aboutMe,
+          intrests: userIntrests,
+          image,
+          socialLinks: userSocialLinks,
+        },
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${accessToken}`,
           },
         }
@@ -158,9 +166,9 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
                 Update <span className="MainHeaderHeading">Profile</span>
               </h1>
               <div className="flex align-center justify-center mb-4">
-                <div className="relative w-[200px]">
+                <div className="relative w-[170px]">
                   <img
-                    src={profileImage}
+                    src={profileImage || UserIcon}
                     alt="pp"
                     className="h-36 w-36 md:h-[150px] md:w-[150px] rounded-full object-cover border-4 border-[#E6E6E6]"
                   />
@@ -180,27 +188,40 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
                 </div>
               </div>
 
-              <div class="mb-6 flex justify-between items-center gap-4 w-full">
-                <input
-                  type="text"
-                  name="first_name"
-                  className="popup_input_custom w-full"
-                  placeholder="First Name"
-                  required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  name="last_name"
-                  className="popup_input_custom w-full"
-                  placeholder="Last Name"
-                  required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
+              <div class="mb-4 flex justify-between items-center gap-4 w-full">
+                <div className=" w-full">
+                  <label className="text-white text-sm mb-2 inline-block">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    name="first_name"
+                    className="popup_input_custom w-full"
+                    placeholder="First Name"
+                    required
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+                <div className=" w-full">
+                  <label className="text-white text-sm mb-2 inline-block">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="last_name"
+                    className="popup_input_custom w-full"
+                    placeholder="Last Name"
+                    required
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
+                <label className="text-white text-sm mb-2 inline-block">
+                  Email Address
+                </label>
                 <input
                   type="email"
                   name="email"
@@ -214,6 +235,9 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
               </div>
 
               <div className="mb-4">
+                <label className="text-white text-sm mb-2 inline-block">
+                  About Me
+                </label>
                 <textarea
                   type="text"
                   name="aboutMe"
@@ -229,64 +253,99 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
               </div>
 
               <div className="mb-4">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setAddIntrestOpen(true)}}
-                  className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
+                <label className="text-white text-sm mb-2 inline-block">
+                  Interests
+                </label>
+                <div>
+                  {/* <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setAddIntrestOpen(true)}}
+                    className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
 
-                >
-                  Add Intrests
-                </button>
-                {userIntrests.length > 0 && (
-                <div className="flex flex-wrap gap-2 items-center">
-                  {userIntrests.map((intrest, index) => (
-                    <span
-                      key={index}
-                      className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
-                    >
-                      {intrest}
-                      <IoMdCloseCircleOutline
-                        color="#F36464"
-                        className="cursor-pointer"
-                        onClick={() => removeIntrest(index)}
-                      />
-                    </span>
-                  ))}
+                  >
+                    Add Intrests
+                  </button> */}
+                  <div className="flex items-center gap-2">
+                    {userIntrests.length > 0 && (
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {userIntrests.map((intrest, index) => (
+                          <span
+                            key={index}
+                            className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                          >
+                            {intrest}
+                            <IoMdCloseCircleOutline
+                              color="#F36464"
+                              className="cursor-pointer"
+                              onClick={() => removeIntrest(index)}
+                            />
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <img
+                      className="cursor-pointer"
+                      src={Plus}
+                      alt="add"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAddIntrestOpen(true);
+                      }}
+                    />
+                  </div>
                 </div>
-              )}
               </div>
 
               <div className="mb-4">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setAddSocialLinkOpen(true)}}
-                  className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
-
-                >
-                  Add Social Links
-                </button>
-                {userSocialLinks.length > 0 && (
-                <div className="flex flex-wrap gap-2 items-center">
-                  {userSocialLinks.map((link, index) => (
-                    <span
-                      key={index}
-                      className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
-                    >
-                      {link.socialName}
-                      <IoMdCloseCircleOutline
-                        color="#F36464"
-                        className="cursor-pointer"
-                        onClick={() => removeSocialLink(index)}
-                      />
-                    </span>
-                  ))}
+                <label className="text-white text-sm mb-2 inline-block">
+                  Social Media
+                </label>
+                <div>
+                  {/* <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setAddSocialLinkOpen(true);
+                    }}
+                    className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
+                  >
+                    Add Social Links
+                  </button> */}
+                  <div className="flex items-center gap-2">
+                    {userSocialLinks.length > 0 && (
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {userSocialLinks.map((link, index) => (
+                          <span
+                            key={index}
+                            className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                          >
+                            {link.socialName}
+                            <IoMdCloseCircleOutline
+                              color="#F36464"
+                              className="cursor-pointer"
+                              onClick={() => removeSocialLink(index)}
+                            />
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <img
+                      className="cursor-pointer"
+                      src={Plus}
+                      alt="add"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAddSocialLinkOpen(true);
+                      }}
+                    />
+                  </div>
                 </div>
-              )}
               </div>
 
               <div class="mb-6">
+                <label className="text-white text-sm mb-2 inline-block">
+                  Games
+                </label>
                 <select
                   name="games"
                   className="popup_input_custom w-full uppercase selectoption"
@@ -337,8 +396,18 @@ console.log('user intre', userIntrests , ' user links', userSocialLinks)
           </div>
         </div>
       </div>
-      <AddIntrest addIntrestOpen={addIntrestOpen} setAddIntrestOpen={setAddIntrestOpen} userIntrests={userIntrests} setUserIntrests={setUserIntrests}/>
-      <AddSocialLinks addSocialLinkOpen={addSocialLinkOpen} setAddSocialLinkOpen={setAddSocialLinkOpen} userSocialLinks={userSocialLinks} setUserSocialLinks={setUserSocialLinks} />
+      <AddIntrest
+        addIntrestOpen={addIntrestOpen}
+        setAddIntrestOpen={setAddIntrestOpen}
+        userIntrests={userIntrests}
+        setUserIntrests={setUserIntrests}
+      />
+      <AddSocialLinks
+        addSocialLinkOpen={addSocialLinkOpen}
+        setAddSocialLinkOpen={setAddSocialLinkOpen}
+        userSocialLinks={userSocialLinks}
+        setUserSocialLinks={setUserSocialLinks}
+      />
     </DashboardLayout>
   );
 };

@@ -501,18 +501,18 @@ const DashboardLayout = ({ children }) => {
               ) : (
                 <div className="flex justify-between items-start md:items-center mb-6 mx-auto w-11/12 flex-col md:flex-row">
                   <div className="flex items-center gap-4 flex-col md:flex-row w-full md:w-[50%]">
-                    <div className="relative w-[200px]">
+                    <div className="relative md:w-[200px]">
                     <img
                       src={profileImage || UserIcon}
                       alt="pp"
                       className="h-36 w-36 md:h-[150px] md:w-[150px] rounded-full object-cover border-4 border-[#E6E6E6]"
                     />
-                    <label
+                    {/* <label
                       htmlFor="profile-pic-upload"
                       className="text-[#929292] text-sm absolute right-6 top-2 flex items-center gap-2 p-2 cursor-pointer hover:text-white bg-[#fff] rounded-full hover:bg-[#12d277]"
                     >
                       <LuFolderEdit color={'black'} size={18} />
-                    </label>
+                    </label> */}
                     <input
                       id="profile-pic-upload"
                       type="file"
@@ -531,7 +531,7 @@ const DashboardLayout = ({ children }) => {
                         }
                         {/* <img src={Social2} alt="img"/> */}
                         {/* <img src={Youtube} alt="img"/> */}
-                        <div className={`cursor-pointer flex items-center ${user?.socialLinks.length == 0 ? 'gap-2': ''}`} onClick={()=> setAddSocialLinkOpen(true)}>
+                        {/* <div className={`cursor-pointer flex items-center ${user?.socialLinks.length == 0 ? 'gap-2': ''}`} onClick={()=> setAddSocialLinkOpen(true)}>
                           <img src={Plus} alt="add" />
                           {
                             user?.socialLinks.length == 0 &&
@@ -539,7 +539,7 @@ const DashboardLayout = ({ children }) => {
                               <span className="text-white text-xs">Add Social Media Links</span>
                             </>
                           }
-                        </div>
+                        </div> */}
                       </div>
                       <div className="mt-5">
                         <div className="mb-2 flex items-center gap-3 justify-center md:justify-start">
@@ -552,7 +552,7 @@ const DashboardLayout = ({ children }) => {
                         </div>
                         <p className="text-[#C3C3C3] text-[12px] md:text-left text-center flex items-center">
                           {truncatedText || ""}
-                          <div className={`cursor-pointer flex items-center ${aboutText.length == 0 ? 'gap-2': ''}`} onClick={() => setAboutMeOpen(true)}>
+                          {/* <div className={`cursor-pointer flex items-center ${aboutText.length == 0 ? 'gap-2': ''}`} onClick={() => setAboutMeOpen(true)}>
                           {
                             aboutText.length > 0 ?
                             <>
@@ -571,7 +571,7 @@ const DashboardLayout = ({ children }) => {
                                 <span className="text-white text-xs">Write About me</span>
                               </>
                             }
-                          </div>
+                          </div> */}
                         </p>
                         
                       </div>
@@ -579,9 +579,12 @@ const DashboardLayout = ({ children }) => {
                     </div>
                   </div>
                   <div className="w-full md:w-auto">
-                    <div className="text-semibold text-white text-sm">
-                      Interests
-                    </div>
+                    {
+                      user?.intrests?.length > 0 &&
+                      <div className="text-semibold text-white text-sm">
+                        Interests
+                      </div>
+                    }
                     <div className="flex justify-center md:justify-start items-center gap-2">
                       <div className={`flex justify-center md:justify-start items-center gap-2 mt-3 mb-3 ${ (user?.intrests).length == 0 ?'md:mb-8' : 'md:mb-4' }  ${(user?.intrests).length > 3 && 'overflow-auto w-72 mb-4'}`}>
                         {
@@ -593,9 +596,9 @@ const DashboardLayout = ({ children }) => {
                       </div>
                         {/* <div className="custom_pills_dashboard">Gaming</div>
                         <div className="custom_pills_dashboard">Racing</div> */}
-                        <img src={Plus} alt="add"
+                        {/* <img src={Plus} alt="add"
                           onClick={() => setAddIntrestOpen(true)}
-                          />
+                          /> */}
                       </div>
                     {/* <div className="flex justify-center md:justify-start items-center gap-2 mt-3 mb-4">
                       <div className="custom_pills_dashboard">Tycoon</div>
@@ -603,7 +606,7 @@ const DashboardLayout = ({ children }) => {
                       <div className="custom_pills_dashboard">Racing</div>
                       <img src={Plus} />
                     </div> */}
-                    <div className="text-semibold text-white text-sm">
+                    <div className="text-semibold text-white text-sm text-center md:text-left">
                       Ratings
                     </div>
 
