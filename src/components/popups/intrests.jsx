@@ -9,22 +9,21 @@ import useUnauthenticated from '../../hooks/useUnauthentication';
 import { FaPlus } from "react-icons/fa";
 
 
-const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
+const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen, userIntrests ,setUserIntrests }) => {
   const user = useSelector(selectUser);
   const accessToken = useSelector(selectAccessToken);
-  const [intrests, setIntrests] = useState(user?.intrests || [{}]); 
   const dispatch = useDispatch();
   const handleUnauthenticated = useUnauthenticated();
   const [loading , setLoading] = useState(false)
+  const [intrests, setIntrests] = useState(['']); 
+
 
 
   const handleAddIntrest = () => {
     setIntrests([...intrests, '']); 
   };
 
-  useEffect(() => {
-    handleAddIntrest()
-  },[])
+
 
   const handleChangeIntrest = (index, value) => {
     const newIntrests = [...intrests];
@@ -34,43 +33,46 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
 
 
   const handleDeleteIntrest = (index) => {
-    const newIntrests = intrests.filter((_, i) => i !== index);
+    const newIntrests = intrests?.filter((_, i) => i !== index);
     setIntrests(newIntrests); 
   };
 
   const handleSubmit = async (e) => {
-    setLoading(true)
+    // setLoading(true)
     e.preventDefault();
-    try {
-      const response = await httpRequest.put(UPDATE_PROFILE, { intrests }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
-      if (response.status === 200 || response.status === 201) {
-        toast.success(response?.data?.message);
-        dispatch(setUser({
-          user: response.data.user,
-          accessToken,
-        }));
-        setAddIntrestOpen(false);
-      }
-    } catch (error) {
-      toast.error(
-        error?.response?.data?.message || "An unexpected error occurred"
-      );
-      if (error?.response?.status === 401) {
-        handleUnauthenticated();
-      }
-      console.error("Error response:", error?.response?.data);
-    }finally{
-        setLoading(false)
-    }
+    setUserIntrests([...userIntrests ,...intrests])
+    onClose()
+    //     return
+    // try {
+    //   const response = await httpRequest.put(UPDATE_PROFILE, { intrests }, {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Authorization': `Bearer ${accessToken}`,
+    //     },
+    //   });
+    //   if (response.status === 200 || response.status === 201) {
+    //     toast.success(response?.data?.message);
+    //     dispatch(setUser({
+    //       user: response.data.user,
+    //       accessToken,
+    //     }));
+    //     setAddIntrestOpen(false);
+    //   }
+    // } catch (error) {
+    //   toast.error(
+    //     error?.response?.data?.message || "An unexpected error occurred"
+    //   );
+    //   if (error?.response?.status === 401) {
+    //     handleUnauthenticated();
+    //   }
+    //   console.error("Error response:", error?.response?.data);
+    // }finally{
+    //     setLoading(false)
+    // }
   };
 
   const onClose = () =>{
-    setIntrests(user?.intrests)
+    setIntrests([''])
     setAddIntrestOpen(false);
   }
 
@@ -92,7 +94,7 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
                 </h1>
                 <div className="w-full overflow-auto max-h-[400px]">
                 {/* Render input fields for each interest */}
-                {intrests.map((intrest, index) => (
+                {intrests?.map((intrest, index) => (
                   <div key={index} className="mb-6 flex items-center">
                     <input
                       type="text"
@@ -140,7 +142,7 @@ const AddIntrest = ({ addIntrestOpen, setAddIntrestOpen }) => {
 
                 <div className="flex justify-center mt-8">
                   <button className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm" disabled={loading}  >
-                    {loading ? 'Loading' : 'UPDATE'}
+                    {loading ? 'Loading' : 'Add'}
                   </button>
                 </div>
               </form>

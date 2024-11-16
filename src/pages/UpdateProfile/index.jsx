@@ -1,43 +1,60 @@
 import React, { useEffect, useState } from "react";
 import { MainLayout, DashboardLayout } from "../../Layouts";
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearUser, selectAccessToken, selectUser, setUser } from "../../store/userSlice";
+import {
+  clearUser,
+  selectAccessToken,
+  selectUser,
+  setUser,
+} from "../../store/userSlice";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import httpRequest from "../../axios";
 import { UPDATE_PROFILE } from "../../constants/apiEndPoints";
 import toast from "react-hot-toast";
 import useUnauthenticated from "../../hooks/useUnauthentication";
+import { LuFolderEdit } from "react-icons/lu";
+import AddIntrest from "../../components/popups/intrests";
+import AddSocialLinks from "../../components/popups/add-social-links";
 
-const Chat = () => {
+const UpdateProfile = () => {
   const user = useSelector(selectUser);
   const [signup, setSignup] = useState(false);
   const location = useLocation();
-  const hasProfile = location.pathname.includes('profile');
+  const hasProfile = location.pathname.includes("profile");
   const [isProfile, setIsProfile] = useState(hasProfile);
-  const accessToken = useSelector(selectAccessToken)
-  const handleUnauthenticated = useUnauthenticated()
+  const accessToken = useSelector(selectAccessToken);
+  const handleUnauthenticated = useUnauthenticated();
   const dispatch = useDispatch();
 
   useEffect(() => {
     // console.log("I am calling");
     // console.log(hasProfile, "hasProfile")
-    setIsProfile(hasProfile)
-  }, [location])
+    setIsProfile(hasProfile);
+  }, [location]);
 
   const [profileImage, setProfileImage] = useState(user?.image);
+  const [image, setImage] = useState(user?.image);
   const [coverImage, setCoverImage] = useState(user?.coverImage);
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [selectedGames, setSelectedGames] = useState(user?.gamesIntrest);
-  const [profileLoading , setProfileLoading] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(false);
   const [aboutMe, setAboutMe] = useState(user?.aboutMe || "");
+  const [addIntrestOpen, setAddIntrestOpen] = useState(false);
+  const [addSocialLinkOpen, setAddSocialLinkOpen] = useState(false);
+  const [userIntrests, setUserIntrests] = useState(user?.intrests);
+  const [userSocialLinks, setUserSocialLinks] = useState(user?.socialLinks || []);
 
-  const normalizedCoverImage = coverImage?.replace(/\\/g, '/');
+
+console.log('user intre', userIntrests , ' user links', userSocialLinks)
+
+  const normalizedCoverImage = coverImage?.replace(/\\/g, "/");
   const aboutText = user?.aboutMe || "";
 
   // Truncate the text to 100 characters
-  const truncatedText = aboutText.length > 100 ? aboutText.slice(0, 100) + "..." : aboutText;
+  const truncatedText =
+    aboutText.length > 100 ? aboutText.slice(0, 100) + "..." : aboutText;
   const gamesList = [
     { id: 1, name: "Assassins Creed" },
     { id: 2, name: "Red Dead Redemption 2" },
@@ -66,157 +83,264 @@ const Chat = () => {
     event.target.value = ""; // Reset the select to default
   };
   const removeGame = (id) => {
-    setSelectedGames(selectedGames.filter((game , index) => index !== id));
+    setSelectedGames(selectedGames.filter((game, index) => index !== id));
   };
-  const handleUpdateProfile =  async(e) =>{
-    setProfileLoading(true)
+
+  const removeIntrest = (ind) => {
+    setUserIntrests(userIntrests?.filter((_, index) => index !== ind));
+  };
+
+  const removeSocialLink = (ind) => {
+    setUserSocialLinks(userSocialLinks?.filter((_, index) => index !== ind));
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+          setProfileImage(reader.result);
+
+        }
+      reader.readAsDataURL(file);
+      setImage(file)
+
+      // console.log('token' ,  accessToken)
+  
+     
+    }
+  };
+
+  const handleUpdateProfile = async (e) => {
+    setProfileLoading(true);
     e.preventDefault();
     try {
-      const response = await httpRequest.put(UPDATE_PROFILE, {firstName , lastName , gamesIntrest: selectedGames, aboutMe},
+      const response = await httpRequest.put(
+        UPDATE_PROFILE,
+        { firstName, lastName, gamesIntrest: selectedGames, aboutMe , intrests: userIntrests   , image , socialLinks: userSocialLinks},
         {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-                }
-            }
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       if (response.status === 200 || response.status === 201) {
         toast.success(response?.data?.message);
-        dispatch(setUser(
-           {
+        dispatch(
+          setUser({
             user: response.data.user,
-            accessToken
-           }
+            accessToken,
+          })
+        );
 
-        ))
-
-        setSignup(false)
-      } 
+        setSignup(false);
+      }
     } catch (error) {
       toast.error(
         error?.response?.data?.message || "An unexpected error occurred"
       );
-      if(
-        error?.response?.status === 401
-      ){
-        handleUnauthenticated()
+      if (error?.response?.status === 401) {
+        handleUnauthenticated();
       }
       console.error("Error response:", error?.response?.data);
-    }finally{
-      setProfileLoading(false)
+    } finally {
+      setProfileLoading(false);
     }
-  }
+  };
   return (
     <DashboardLayout>
       <div className=" bg-[#18181810] backdrop-blur-[20px] h-screen w-full popup_outer  ">
-          <div class="flex justify-center items-center">
-            <div class="center_popup_div p-10 px-6 md:px-14 CorenerRound w-[90%] bounce-enter">
-              
-              <form method="post">
-                <h1 class="text-4xl font-bold text-center text-white uppercase mb-10">
-                  Update <span className="MainHeaderHeading">Profile</span>
-                </h1>
-                <div class="mb-6 flex justify-between items-center gap-4 w-full">
-                  <input
-                    type="text"
-                    name="first_name"
-                    className="popup_input_custom w-full"
-                    placeholder="First Name"
-                    required
-                    value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
+        <div class="flex justify-center items-center">
+          <div class="center_popup_div p-10 px-6 md:px-14 CorenerRound w-[90%] bounce-enter">
+            <form method="post">
+              <h1 class="text-4xl font-bold text-center text-white uppercase mb-8">
+                Update <span className="MainHeaderHeading">Profile</span>
+              </h1>
+              <div className="flex align-center justify-center mb-4">
+                <div className="relative w-[200px]">
+                  <img
+                    src={profileImage}
+                    alt="pp"
+                    className="h-36 w-36 md:h-[150px] md:w-[150px] rounded-full object-cover border-4 border-[#E6E6E6]"
                   />
-                  <input
-                    type="text"
-                    name="last_name"
-                    className="popup_input_custom w-full"
-                    placeholder="Last Name"
-                    required
-                    value={lastName}
-                    onChange={e => setLastName(e.target.value)}
-                  />
-                </div>
-                <div className="mb-6">
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="popup_input_custom w-full"
-                    placeholder="Email Address"
-                    required
-                    disabled
-                    value={user?.email}
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <textarea
-                    type="text"
-                    name="aboutMe"
-                    id="aboutMe"
-                    rows="4"
-                    cols="50"
-                    className="popup_input_custom w-full"
-                    placeholder="Write something about yourself"
-                    onChange={(e) => setAboutMe(e.target.value)}
-                    value={aboutMe}
-                    required
-                  />
-                </div>
-
-                <div class="mb-6">
-                  <select
-                    name="games"
-                    className="popup_input_custom w-full uppercase selectoption"
-                    onChange={handleSelectChange}
+                  <label
+                    htmlFor="profile-pic-upload"
+                    className="text-[#929292] text-sm absolute right-6 top-2 flex items-center gap-2 p-2 cursor-pointer hover:text-white bg-[#fff] rounded-full hover:bg-[#12d277]"
                   >
-                    <option value="">Select Games You are interested?</option>
-                    {gamesList.map((game) => (
-                      <option
-                        key={game.id}
-                        value={game.id}
-                        disabled={selectedGames.some(
-                          (selected) => selected.id === game.id
-                        )}
-                      >
-                        {game.name}
-                      </option>
-                    ))}
-                  </select>
+                    <LuFolderEdit color={"black"} size={18} />
+                  </label>
+                  <input
+                    id="profile-pic-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
                 </div>
-                {selectedGames.length > 0 && (
-                  <div className="flex flex-wrap gap-2 items-center">
-                    {selectedGames.map((game , index) => (
-                      <span
-                        key={index}
-                        className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
-                      >
-                        {game.name}
-                        <IoMdCloseCircleOutline
-                          color="#F36464"
-                          className="cursor-pointer"
-                          onClick={() => removeGame(index)}
-                        />
-                      </span>
-                    ))}
-                  </div>
-                )}
+              </div>
 
-                <div className="flex justify-center mt-8">
-                  <button
-                    className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm"
-                    onClick={handleUpdateProfile}
-                    disabled={profileLoading}
-                  >
-                    {profileLoading ? 'Loading' : 'UPDATE PROFILE'}
-                  </button>
+              <div class="mb-6 flex justify-between items-center gap-4 w-full">
+                <input
+                  type="text"
+                  name="first_name"
+                  className="popup_input_custom w-full"
+                  placeholder="First Name"
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <input
+                  type="text"
+                  name="last_name"
+                  className="popup_input_custom w-full"
+                  placeholder="Last Name"
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+              <div className="mb-6">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="popup_input_custom w-full"
+                  placeholder="Email Address"
+                  required
+                  disabled
+                  value={user?.email}
+                />
+              </div>
+
+              <div className="mb-4">
+                <textarea
+                  type="text"
+                  name="aboutMe"
+                  id="aboutMe"
+                  rows="4"
+                  cols="50"
+                  className="popup_input_custom w-full"
+                  placeholder="Write something about yourself"
+                  onChange={(e) => setAboutMe(e.target.value)}
+                  value={aboutMe}
+                  required
+                />
+              </div>
+
+              <div className="mb-4">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setAddIntrestOpen(true)}}
+                  className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
+
+                >
+                  Add Intrests
+                </button>
+                {userIntrests.length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center">
+                  {userIntrests.map((intrest, index) => (
+                    <span
+                      key={index}
+                      className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                    >
+                      {intrest}
+                      <IoMdCloseCircleOutline
+                        color="#F36464"
+                        className="cursor-pointer"
+                        onClick={() => removeIntrest(index)}
+                      />
+                    </span>
+                  ))}
                 </div>
-              </form>
-            </div>
+              )}
+              </div>
+
+              <div className="mb-4">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setAddSocialLinkOpen(true)}}
+                  className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm mb-4"
+
+                >
+                  Add Social Links
+                </button>
+                {userSocialLinks.length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center">
+                  {userSocialLinks.map((link, index) => (
+                    <span
+                      key={index}
+                      className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                    >
+                      {link.socialName}
+                      <IoMdCloseCircleOutline
+                        color="#F36464"
+                        className="cursor-pointer"
+                        onClick={() => removeSocialLink(index)}
+                      />
+                    </span>
+                  ))}
+                </div>
+              )}
+              </div>
+
+              <div class="mb-6">
+                <select
+                  name="games"
+                  className="popup_input_custom w-full uppercase selectoption"
+                  onChange={handleSelectChange}
+                >
+                  <option value="">Select Games You are interested?</option>
+                  {gamesList.map((game) => (
+                    <option
+                      key={game.id}
+                      value={game.id}
+                      disabled={selectedGames.some(
+                        (selected) => selected.id == game.id
+                      )}
+                    >
+                      {game.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {selectedGames.length > 0 && (
+                <div className="flex flex-wrap gap-2 items-center">
+                  {selectedGames.map((game, index) => (
+                    <span
+                      key={index}
+                      className="bg-[#1C1C1C] p-3 pl-5 rounded-3xl text-white flex items-center gap-2 text-[12px] uppercase font-semibold"
+                    >
+                      {game.name}
+                      <IoMdCloseCircleOutline
+                        color="#F36464"
+                        className="cursor-pointer"
+                        onClick={() => removeGame(index)}
+                      />
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex justify-center mt-8">
+                <button
+                  className="LoginBtn h-[45px] min-w-[180px] rounded-tr-xl rounded-bl-xl uppercase text-sm"
+                  onClick={handleUpdateProfile}
+                  disabled={profileLoading}
+                >
+                  {profileLoading ? "Loading" : "UPDATE PROFILE"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
+      </div>
+      <AddIntrest addIntrestOpen={addIntrestOpen} setAddIntrestOpen={setAddIntrestOpen} userIntrests={userIntrests} setUserIntrests={setUserIntrests}/>
+      <AddSocialLinks addSocialLinkOpen={addSocialLinkOpen} setAddSocialLinkOpen={setAddSocialLinkOpen} userSocialLinks={userSocialLinks} setUserSocialLinks={setUserSocialLinks} />
     </DashboardLayout>
   );
 };
 
-export default Chat;
+export default UpdateProfile;
